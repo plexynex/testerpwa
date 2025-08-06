@@ -1,7 +1,7 @@
 {
     "name": "Aplikasi Web Progressif",
     "short_name": "PWA Demo",
-    "start_url": "/",
+    "start_url": "/index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#4285f4",
