@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Saya</title>
+    <link rel="manifest" href="/manifest.json">
+    <style>
+        /* CSS Anda di sini */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Aplikasi Web Saya</h1>
+    <p>Ini adalah aplikasi web progresif yang bisa diinstall.</p>
+    
+    <script>
+        // JavaScript untuk mendaftarkan service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+        
+        // Menampilkan prompt install
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Mencegah prompt otomatis
+            e.preventDefault();
+            // Simpan event untuk digunakan nanti
+            deferredPrompt = e;
+            // Tampilkan tombol install atau notifikasi
+            console.log('Aplikasi bisa diinstall');
+        });
+    </script>
+</body>
+</html>
