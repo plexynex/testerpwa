@@ -3,46 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Saya</title>
-    <link rel="manifest" href="/manifest.json">
+    <meta name="description" content="Contoh aplikasi web progresif (PWA) yang bisa diinstall">
+    <title>Aplikasi Web Progressif</title>
+    <link rel="manifest" href="manifest.json">
     <style>
-        /* CSS Anda di sini */
+        /* Reset CSS Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+            color: #333;
             padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: #4285f4;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        #installButton {
+            display: none;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 20px auto;
+            transition: background-color 0.3s;
+        }
+        
+        #installButton:hover {
+            background-color: #3367d6;
+        }
+        
+        .features {
+            margin-top: 30px;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #4285f4;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 15px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Aplikasi Web Saya</h1>
-    <p>Ini adalah aplikasi web progresif yang bisa diinstall.</p>
+    <header>
+        <h1>Aplikasi Web Progressif</h1>
+        <p>Contoh PWA yang bisa diinstall seperti aplikasi native</p>
+    </header>
+    
+    <div class="container">
+        <p>Selamat datang di contoh aplikasi web progresif (PWA). Aplikasi ini dapat diinstall di perangkat Anda dan berfungsi seperti aplikasi native.</p>
+        
+        <button id="installButton">Install Aplikasi</button>
+        
+        <div class="features">
+            <h2>Fitur Aplikasi:</h2>
+            <div class="feature">
+                <span class="feature-icon">✓</span>
+                <span>Dapat diinstall di perangkat</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">✓</span>
+                <span>Bekerja offline</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">✓</span>
+                <span>Notifikasi push</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">✓</span>
+                <span>Loading cepat</span>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 Contoh PWA. Dibuat untuk demonstrasi.</p>
+    </footer>
     
     <script>
-        // JavaScript untuk mendaftarkan service worker
+        // Mendaftarkan Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('sw.js')
                     .then(registration => {
-                        console.log('ServiceWorker registration successful');
+                        console.log('Service Worker terdaftar dengan sukses:', registration.scope);
                     })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed: ', err);
+                    .catch(error => {
+                        console.log('Pendaftaran Service Worker gagal:', error);
                     });
             });
         }
         
-        // Menampilkan prompt install
+        // Menangani Install Prompt
         let deferredPrompt;
+        const installButton = document.getElementById('installButton');
         
         window.addEventListener('beforeinstallprompt', (e) => {
             // Mencegah prompt otomatis
             e.preventDefault();
             // Simpan event untuk digunakan nanti
             deferredPrompt = e;
-            // Tampilkan tombol install atau notifikasi
-            console.log('Aplikasi bisa diinstall');
+            // Tampilkan tombol install
+            installButton.style.display = 'block';
+            
+            console.log('Aplikasi memenuhi syarat untuk diinstall');
         });
+        
+        installButton.addEventListener('click', () => {
+            if (deferredPrompt) {
+                // Tampilkan prompt install
+                deferredPrompt.prompt();
+                
+                // Lihat hasil pilihan user
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Pengguna menerima install prompt');
+                    } else {
+                        console.log('Pengguna menolak install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+        
+        // Deteksi apakah aplikasi sudah diinstall
+        window.addEventListener('appinstalled', () => {
+            console.log('Aplikasi berhasil diinstall');
+            installButton.style.display = 'none';
+        });
+        
+        // Cek mode tampilan
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            console.log('Aplikasi dibuka dalam mode standalone');
+            installButton.style.display = 'none';
+        }
     </script>
 </body>
 </html>
