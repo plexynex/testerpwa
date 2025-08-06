@@ -1,11 +1,11 @@
 {
-    "name": "Aplikasi Saya",
-    "short_name": "AppSaya",
+    "name": "Aplikasi Web Progressif",
+    "short_name": "PWA Demo",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#4285f4",
-    "description": "Ini adalah aplikasi web progresif saya",
+    "description": "Contoh aplikasi web progresif yang bisa diinstall",
     "icons": [
         {
             "src": "icon-192x192.png",
